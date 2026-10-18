@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Trust Capital Marketplace
 
-## Getting Started
+Plataforma privada de créditos con garantía hipotecaria e inversiones (Costa Rica).
+Stack: Next.js 15 (App Router) · TypeScript · Tailwind CSS 4 · Supabase (Auth, PostgreSQL + RLS, Storage) · Vercel.
 
-First, run the development server:
+Documentación: [PLAN](PLAN.md) · [ARCHITECTURE](ARCHITECTURE.md) · [DATABASE](DATABASE.md) · [SECURITY](SECURITY.md)
+
+## Puesta en marcha
 
 ```bash
+npm install
+cp .env.example .env.local   # completar con los datos del proyecto Supabase
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+1. Aplicar las migraciones de `supabase/migrations/` en orden (Supabase CLI `supabase db push` o el editor SQL).
+2. En Supabase → Authentication → URL Configuration: *Site URL* = `NEXT_PUBLIC_SITE_URL` y agregar `…/auth/callback` y `…/auth/confirm` a *Redirect URLs*.
+3. Recomendado: en las plantillas de correo usar `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/app` (funciona aunque el enlace se abra en otro dispositivo). Activar *Leaked password protection*.
+4. Crear el primer administrador: registrar el usuario en Authentication → Users y ejecutar en SQL:
+   ```sql
+   insert into public.user_roles (user_id, role) values ('<uuid>', 'ADMIN');
+   update public.profiles set primary_role = 'ADMIN' where id = '<uuid>';
+   ```
+   Al ingresar, la app exigirá activar la verificación en dos pasos (MFA) antes de abrir el panel admin.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Comando | Qué hace |
+|---|---|
+| `npm run dev` | Servidor local |
+| `npm run build` | Build de producción |
+| `npm run lint` / `npm run typecheck` | Calidad |
+| `npm test` | Pruebas: motor financiero + RLS/triggers sobre PostgreSQL en memoria (PGlite) |
 
-## Learn More
+## Variables de entorno
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Uso |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL del proyecto |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` (o `NEXT_PUBLIC_SUPABASE_ANON_KEY`) | Clave pública |
+| `NEXT_PUBLIC_SITE_URL` | URL pública para enlaces de correo |

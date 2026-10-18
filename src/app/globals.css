@@ -1,26 +1,121 @@
 @import "tailwindcss";
 
+/*
+ * Trust Capital — tokens de diseño.
+ * Sistema visual provisional: para aplicar la marca oficial basta con
+ * cambiar los valores de esta sección; los componentes solo usan tokens.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --tc-navy-950: #071426;
+  --tc-navy-900: #0b1f3a;
+  --tc-navy-800: #12305a;
+  --tc-navy-700: #1a4178;
+  --tc-teal-600: #0f8a82;
+  --tc-teal-500: #14a39a;
+  --tc-teal-100: #d5f2ef;
+  --tc-teal-50: #ecf9f7;
+
+  --background: #f6f7f9;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --primary: var(--tc-navy-900);
+  --primary-hover: var(--tc-navy-800);
+  --primary-foreground: #ffffff;
+  --accent: var(--tc-teal-500);
+  --accent-strong: var(--tc-teal-600);
+  --accent-soft: var(--tc-teal-50);
+  --accent-foreground: #ffffff;
+  --muted: #eef1f5;
+  --muted-foreground: #5b6779;
+  --border: #e3e7ee;
+  --input: #d7dce5;
+  --ring: var(--tc-teal-500);
+
+  --success: #15803d;
+  --success-soft: #e8f6ec;
+  --warning: #b45309;
+  --warning-soft: #fdf3e2;
+  --danger: #b91c1c;
+  --danger-soft: #fcebeb;
+  --info: #1d4ed8;
+  --info-soft: #e9effd;
+
+  --sidebar: var(--tc-navy-950);
+  --sidebar-foreground: #c7d2e3;
+  --sidebar-active: rgba(20, 163, 154, 0.16);
+  --sidebar-active-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+
+  --radius: 0.625rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-active: var(--sidebar-active);
+  --color-sidebar-active-foreground: var(--sidebar-active-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-navy-950: var(--tc-navy-950);
+  --color-navy-900: var(--tc-navy-900);
+  --color-navy-800: var(--tc-navy-800);
+  --color-navy-700: var(--tc-navy-700);
+  --color-teal-600: var(--tc-teal-600);
+  --color-teal-500: var(--tc-teal-500);
+  --color-teal-100: var(--tc-teal-100);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: var(--border);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
 }
